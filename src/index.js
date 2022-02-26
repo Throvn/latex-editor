@@ -2,61 +2,69 @@ const $preview = document.getElementById("preview");
 const $download = document.getElementById("download");
 const $compile = document.getElementById("compile");
 const $tabs = document.getElementById("tabs");
+const $output = document.getElementById("output");
 console.log(editor.getValue());
-let texlive = new TeXLive("./assets/texlivejs/");
-let tempTexLive = new TeXLive("./assets/texlivejs/");
+
+const engine = new PdfTeXEngine();
+
+const initSwiftLatex = async () => {
+  await engine.loadEngine();
+};
+
+initSwiftLatex()
+  .then(() => {
+    console.log("Finished loading engine");
+    document.getElementById("loading").remove();
+  })
+  .catch((e) => {
+    console.error(e);
+  });
 
 document.getElementById("compile").onclick = () => {
   $compile.classList.add("disabled");
-  $compile.innerHTML = `<i class="codicon codicon-run"></i> Compiling`;
+  $compile.innerHTML = `<i class="codicon codicon-run spinning"></i> Compiling`;
 
   const latex_code = editor.getValue();
-  texlive.pdftex.compile(latex_code).then(function (pdf) {
-    $preview.src = pdf;
-    $download.href = pdf;
+  // TODO(Throvn): Load all files efficiently into MemFS
+  engine.writeMemFSFile("main.tex", latex_code);
+  engine.setEngineMainFile("main.tex");
 
-    // TODO: Continue implementing files
-    texlive.pdftex.FS_readFile();
+  engine
+    .compileLaTeX()
+    .then((result) => {
+      $output.innerHTML = result.log;
+      console.info(result);
+      let binary = "";
+      const len = result.pdf.byteLength;
+      for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode(result.pdf[i]);
+      }
+      return "data:application/pdf;base64," + window.btoa(binary);
+    })
+    .then(function (pdf) {
+      console.log(pdf);
+      $preview.src = pdf;
+      $download.href = pdf;
 
-    tempTexLive = new TeXLive("./assets/texlivejs/");
-
-    texlive.terminate();
-    $compile.innerHTML = `<i class="codicon codicon-run"></i> Compile`;
-    $compile.classList.remove("disabled");
-  });
+      $compile.innerHTML = `<i class="codicon codicon-run"></i> Compile`;
+      $compile.classList.remove("disabled");
+    })
+    .catch((e) => console.error(e));
 };
 
-const addFileToEmscriptenFS = (name, contents, path) => {
+const addFileToEmscriptenFS = (name = "", contents, path = "/") => {
   console.log("AddFileToEmscriptenFS:");
-  console.log(name);
-  console.log(path);
-  texlive = new TeXLive("./assets/texlivejs/");
 
-  texlive.pdftex
-    .FS_createPath("/", path, /*canRead=*/ true, /*canWrite=*/ true)
-    .then(function () {
-      console.log("createdPATH");
-      texlive.pdftex
-        .FS_createLazyFile(
-          "/" + path,
-          name,
-          contents,
-          /*canRead=*/ true,
-          /*canWrite=*/ true
-        )
-        .then(function () {
-          console.log("createdDATAFILE");
-          console.log(editor.getValue());
-          console.log(texlive.pdftex);
-          texlive.pdftex.compile(editor.getValue()).then(function (pdf) {
-            console.log("createdCOMPILATION");
-            $preview.src = pdf;
-            $download.href = pdf;
-
-            texlive.terminate();
-          });
-        });
-    });
+  console.log(path + "/" + name, contents);
+  for (const folder of path.split("/")) {
+    try {
+      engine.makeMemFSFolder(folder);
+    } catch (e) {
+      console.info(e);
+    }
+  }
+  engine.writeMemFSFile(path + "/" + name, contents);
+  console.log("created new file");
 };
 
 /**
