@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" data-name="vs/editor/editor.main"
+        href="../node_modules/monaco-editor/min/vs/editor/editor.main.css" />
+    <link rel="stylesheet" href="./assets/tree-view/tree.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+    <link rel="shortcut icon" href="./assets/images/editro.svg" type="image/svg">
+</head>
+
+<body>
+    <!-- As a heading -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img height="30" src="./assets/images/editro.svg" alt="Editro logo"></a>
+
+            <div class="nav ml-auto">
+                <a class="nav-link btn btn-light mr-2" id="download" download="Main.pdf" href="">
+                    <i class="codicon codicon-cloud-download"></i> PDF
+                </a>
+                <a class="nav-link btn btn-light" id="compile">
+                    <i class="codicon codicon-run"></i> Compile
+                </a>
+            </div>
+
+        </div>
+    </nav>
+    <div class="resize-container" style="height: calc(100vh - 56px); overflow: hidden;">
+        <div class="rs-col" style="width: 20%;">
+            <div class="bg-white" style="justify-self: stretch; width: 100%; overflow: auto;">
+                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1; height: 33px; border-bottom: #cccccc 1px solid; color: #4a4a4b !important; background-color: #f9f9fa;"
+                    class="px-2" onclick="document.getElementById('files').classList.toggle('d-none')">
+                    <h5 class="d-inline-block pt-1" style="user-select: none;">
+                        Files</h5>
+                    <div class="icons float-right d-flex mt-2" style="height: 28.8; justify-content: baseline;">
+                        <i class="codicon codicon-new-file"></i>
+                        <div class="border-left mx-1"></div>
+                        <i class="codicon codicon-new-folder"></i>
+                        <div class="border-left mx-1"></div>
+                        <i class="codicon codicon-ellipsis" role="button" id="dropdownMenuLink"
+                            data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="tree-expandable-parent py-2 m-0" style="min-height: 20%;" id="files">
+                </ul>
+
+                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1; height: 33px; border-top:#cccccc 1px solid; border-bottom: #cccccc 1px solid; color: #4a4a4b !important; background-color: #f9f9fa;"
+                    class="px-2 mb-2">
+                    <h5 class="d-inline-block pt-1" style="user-select: none;">Output</h5>
+                    <div class="icons float-right d-flex mt-2" style="height: 28.8; justify-content: baseline;">
+                        <i class="codicon codicon-trash"
+                            onclick="document.getElementById('output').innerHTML = '';"></i>
+                        <div class="border-left mx-1"></div>
+                        <i class="codicon codicon-ellipsis" role="button" id="dropdownMenuLink"
+                            data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="output" class="px-2 h-50">
+                </div>
+
+                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1; height: 33px; border-top:#cccccc 1px solid; border-bottom: #cccccc 1px solid; color: #4a4a4b !important; background-color: #f9f9fa;"
+                    class="px-2" onclick="document.getElementById('tasks').classList.toggle('d-none')">
+                    <h5 class="d-inline-block pt-1" style="user-select: none;">Tasks</h5>
+                </div>
+
+                <div id="tasks" class="p-2 text-center" style="overflow-y: scroll;">
+                    No tasks at the moment.
+                </div>
+            </div>
+        </div>
+        <div class="handler">
+            <div
+                style="height: 33px; border-bottom: #cccccc 1px solid; color: #4a4a4b !important; background-color: #f9f9fa;">
+            </div>
+        </div>
+        <div class="rs-col" style="width: 40%;">
+            <div class="bg-light" style="justify-self: stretch; width: 100%;">
+                <div id="tabs" class="d-flex"
+                    style="border-bottom: 1px #cccccc solid; background-color: #f9f9fa; height: 33px; overflow-x: scroll; overflow-y: hidden;">
+
+                    <div class="tab" style="color: red;" onclick="deleteAllTabs()">
+                        <i class="codicon codicon-trash"
+                            style="position: relative; transform: translateY(-60%); top: 50%;"></i>
+                    </div>
+                </div>
+                <div id="editor" class="rounded" style="width: 100%; height: calc(100% - 35px);">
+                </div>
+                <div
+                    style="width: 100%; height: calc(100% - 35px); display: none; background-image: url(./assets/images/pattern.svg);">
+                    <object data="./assets/images/circle-slash.svg" type="image/svg">
+                        <img id="imagePreview" class="w-100 p-2"
+                            style="transform: translateY(-50%); top: 50%; position: relative;"
+                            alt="preview of selected document">
+                    </object>
+                </div>
+            </div>
+        </div>
+        <div class="handler">
+            <div
+                style="height: 33px; border-bottom: #cccccc 1px solid; color: #4a4a4b !important; background-color: #f9f9fa;">
+            </div>
+        </div>
+        <div class="rs-col" style="width: 40%;">
+            <div class="bg-light" style="justify-self: stretch; width: 100%;">
+                <iframe id="preview" src="http://africau.edu/images/default/sample.pdf" frameborder="0"
+                    style="width: 100%; height: 100%;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+        integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+        integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous">
+    </script>
+    <script src="./assets/tree-view/index.js"></script>
+
+    <script src="./resize.js"></script>
+
+    <script>
+        var require = {
+            paths: {
+                vs: '../node_modules/monaco-editor/min/vs'
+            }
+        };
+    </script>
+
+    <script src="../node_modules/monaco-editor/min/vs/loader.js"></script>
+    <script src="../node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+    <script src="../node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
+    <script src="./assets/texlivejs/promisejs/promise.js"></script>
+    <script src="./assets/texlivejs/pdftex.js"></script>
+
+    <script src="./assets/rules.js"></script>
+    <script src="index.js"></script>
+
+    <script src="./assets/filesystem.js"></script>
+</body>
+
+</html>

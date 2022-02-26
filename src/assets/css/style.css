@@ -1,0 +1,67 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #eeeeee;
+}
+
+.rs-col {
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+}
+
+.handler {
+    width: 10px;
+    /* background-color: #eee; */
+}
+
+
+.handler:hover {
+    cursor: ew-resize;
+}
+
+.rounded-container {
+    background-color: white;
+    padding: 5px;
+    margin: 5px;
+    height: 100%;
+    border-radius: .25rem;
+}
+
+.resize-container {
+    height: 100vh;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: stretch;
+    justify-items: stretch;
+}
+
+.monaco-editor {
+    border-radius: .25rem;
+}
+
+.tab {
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 1000ms;
+    transition-property: background-color;
+    border-radius: .25rem .25rem 0 0;
+    border: #ccc 1px solid;
+    border-bottom: none;
+    margin-top: 5px;
+    margin-right: 5px;
+    padding: 0 5px 0 5px;
+    background-color: #eee;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    cursor: pointer;
+}
+
+.tab:hover {
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 1000ms;
+    background-color: rgb(226, 226, 226);
+}
+
+.tab-active {
+    margin-bottom: -1px !important;
+    background-color: white !important;
+}
