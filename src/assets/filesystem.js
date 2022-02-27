@@ -95,3 +95,15 @@ const openFile = (filePath) => {
     window.open(file.contents);
   }
 };
+
+/**
+ * Updates the file contents and saves it to local storage.
+ * @param {string} filePath file to be updated inside of `fs`
+ * @param {string} fileContents
+ */
+const updateAndSaveFile = (filePath = "", fileContents = "") => {
+  const file = getFile(filePath);
+  if (fileContents) file.contents = fileContents;
+
+  saveFS();
+};

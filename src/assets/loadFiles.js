@@ -15,6 +15,8 @@ function initEditorGist() {
 
     if (localStorage.getItem("fs" + gistId)) {
       fs = JSON.parse(localStorage.getItem("fs" + gistId));
+      window.tests = JSON.parse(localStorage.getItem("test" + gistId));
+      addToTabs(getFile("main.tex"), "main.tex");
       openFile("main.tex");
     } else {
       fs = {
@@ -61,6 +63,7 @@ Just drag and drop the file(s), you will have visual feedback.`,
                 case "tests.json":
                   window.tests = JSON.parse(file.content);
                   renderTests(tests);
+                  localStorage.setItem("test" + gistId, file.content);
                   break;
                 default:
                   createFile(file.filename, file.content, file.type, "");
@@ -68,10 +71,12 @@ Just drag and drop the file(s), you will have visual feedback.`,
               }
             }
           }
-          $files.innerHTML = getTreeHTML(fs);
-          updateTree();
+          saveFS();
         })
         .catch((e) => console.error(e));
     }
   }
+  renderTests(tests);
+  $files.innerHTML = getTreeHTML(fs);
+  updateTree();
 }

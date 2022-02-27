@@ -28,6 +28,11 @@ const compileLaTeX = () => {
   $compile.innerHTML = `<i class="codicon codicon-run spinning"></i> Compiling`;
 
   const latex_code = editor.getValue();
+  // since there is always only one single active tab
+  const storeLocation = document
+    .getElementsByClassName("tab-active")[0]
+    .getAttribute("path");
+  updateAndSaveFile(storeLocation, latex_code);
   // TODO(Throvn): Load all files efficiently into MemFS
   engine.writeMemFSFile("main.tex", latex_code);
   engine.setEngineMainFile("main.tex");
