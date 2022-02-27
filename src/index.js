@@ -63,6 +63,12 @@ const compileLaTeX = () => {
 
 document.getElementById("compile").onclick = compileLaTeX;
 
+/**
+ * adds the specified file to the emscripten filesystem.
+ * @param {string} name
+ * @param {string|Uint8Array} contents file contents
+ * @param {string} path filesystem path with "/" as seperator
+ */
 const addFileToEmscriptenFS = (name = "", contents, path = "/") => {
   console.log("AddFileToEmscriptenFS:");
 
@@ -94,10 +100,14 @@ const deleteAllTabs = () => {
     <i class="codicon codicon-trash"
       style="position: relative; transform: translateY(-60%); top: 50%;"></i>
   </div>`;
+
+  $defaultScreen.style.display = "block";
+  $editor.style.display = "none";
+  $imagePreview.parentElement.parentElement.style.display = "none";
 };
 
 /**
- * Adds the file to the tabs if not open yet
+ * Adds the file to the tabs if not open yet. Or activates tab, if open
  * @param {object} file
  * @param {string} filePath
  */
@@ -106,17 +116,17 @@ const addToTabs = (file, filePath) => {
     const $tab = $tabs.children[i];
     if ($tab.getAttribute("path") === filePath) {
       console.info(file.label, "already open");
-      // TODO: update active tab
+      setAsActiveTab($tab);
       return;
     }
   }
 
   $tabs.insertAdjacentHTML(
     "beforeend",
-    `<div class="tab" path="${filePath}" onclick="openFile('${filePath}'); setAsActiveTab(this);">
-      <i class="codicon codicon-close" onclick="this.parentElement.remove()"
+    `<div class="tab" path="${filePath}">
+      <i class="codicon codicon-close" onclick="removeTab(this.parentElement);"
         style="position: relative; transform: translateY(-60%); top: 50%;"></i>
-      ${file.label}
+      <span onclick="openFile('${filePath}'); setAsActiveTab(this.parentElement);">${file.label}</span>
     </div>`
   );
   setAsActiveTab($tabs.lastChild);
@@ -137,6 +147,21 @@ const setAsActiveTab = (tab) => {
 };
 
 /**
+ * Removes the tab from the ui, but also from the editor, and makes a new one active.
+ * @param {HTMLElement} tab the tab to be removed
+ */
+const removeTab = (tab) => {
+  tab.remove();
+
+  // if all tabs exept for 'delete all' are closed
+  if ($tabs.children.length === 1) showScreen("default");
+  else if (tab.classList.contains("tab-active")) {
+    const nextShownTab = $tabs.children.item($tabs.children.length - 1);
+    setAsActiveTab(nextShownTab);
+    openFile(nextShownTab.getAttribute("path"));
+  }
+};
+/**
  * Makes the Compile button in the ui clickable again
  */
 function enableCompileButton() {
@@ -152,3 +177,28 @@ document.onkeydown = (ev) => {
     compileLaTeX();
   }
 };
+
+/**
+ * Shows the desired screen, and hides all of the other
+ * @param {string} screenName the screen to show (default|image|editor)
+ */
+function showScreen(screenName = "default") {
+  switch (screenName) {
+    case "image":
+      $defaultScreen.style.display = "none";
+      $editor.style.display = "none";
+      $imagePreview.parentElement.parentElement.style.display = "block";
+      break;
+    case "editor":
+      $defaultScreen.style.display = "none";
+      $editor.style.display = "block";
+      $imagePreview.parentElement.parentElement.style.display = "none";
+      break;
+    case "default":
+    default:
+      $defaultScreen.style.display = "block";
+      $editor.style.display = "none";
+      $imagePreview.parentElement.parentElement.style.display = "none";
+      break;
+  }
+}

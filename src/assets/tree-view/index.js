@@ -2,11 +2,12 @@
 
 const $editor = document.getElementById("editor");
 const $imagePreview = document.getElementById("imagePreview");
+const $defaultScreen = document.getElementById("defaultScreen");
 
 /**
  * Goes through the already rendered DOM structure and makes tree interactive
  *
- * Call after `$files.innerHTML = getTreeHTML(fs);`
+ * ⚠️ Call after `$files.innerHTML = getTreeHTML(fs);`
  */
 function updateTree() {
   // Handle expandables
@@ -160,14 +161,16 @@ function getTreeHTML(dir, counter = 0, currentPath = "") {
 const openFile = (filePath) => {
   const file = getFile(filePath);
   console.info(file);
-  if (file.type.search(/text|File/) > -1) {
+  if (file.type.search(/text|File|tex|json/) > -1) {
     editor.setValue(file.contents);
     $editor.style.display = "block";
     $imagePreview.parentElement.parentElement.style.display = "none";
+    $defaultScreen.style.display = "none";
   } else if (file.type.search(/image/) > -1) {
     $imagePreview.src = file.contents;
     $imagePreview.parentElement.parentElement.style.display = "block";
     $editor.style.display = "none";
+    $defaultScreen.style.display = "none";
   } else {
     window.open(file.contents);
   }
