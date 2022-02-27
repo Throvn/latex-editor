@@ -1,4 +1,6 @@
 const $files = document.getElementById("files");
+const gistId = location.hash.substring(1) || "";
+let fs = JSON.parse(localStorage.getItem("fs" + gistId));
 
 const createFolder = (name) => {
   const newFolder = {
@@ -52,8 +54,6 @@ const createFile = (name, contents, type, path = "") => {
 
   console.log("file created!");
 };
-$files.innerHTML = getTreeHTML(fs);
-updateTree();
 
 /**
  * Retrieves the object of the path
@@ -75,9 +75,23 @@ const getFile = (path) => {
 };
 
 /**
- * Saves all of the files to localStorage
+ * Opens the desired file (either in custom container or as window.open)
+ * @param {string} filePath
  */
-const saveFS = () => {
-  const gistId = location.hash.substring(1) || "";
-  localStorage.setItem("fs" + gistId, JSON.stringify(fs));
+const openFile = (filePath) => {
+  const file = getFile(filePath);
+  console.info(file);
+  if (file.type.search(/text|File|tex|json/) > -1) {
+    editor.setValue(file.contents);
+    $editor.style.display = "block";
+    $imagePreview.parentElement.parentElement.style.display = "none";
+    $defaultScreen.style.display = "none";
+  } else if (file.type.search(/image/) > -1) {
+    $imagePreview.src = file.contents;
+    $imagePreview.parentElement.parentElement.style.display = "block";
+    $editor.style.display = "none";
+    $defaultScreen.style.display = "none";
+  } else {
+    window.open(file.contents);
+  }
 };

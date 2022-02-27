@@ -1,34 +1,77 @@
 console.log("Checking for file load url...");
 
+/**
+ * Saves all of the files to localStorage
+ */
+const saveFS = () => {
+  const gistId = location.hash.substring(1) || "";
+  localStorage.setItem("fs" + gistId, JSON.stringify(fs));
+};
+
 function initEditorGist() {
   const gistId = location.hash.substring(1);
   if (location.hash && gistId.length === 32) {
     console.log("Found task");
-    fetch("https://api.github.com/gists/" + gistId, {
-      method: "GET",
-    })
-      .then((result) => result.json())
-      .then((result) => {
-        for (const fileName in result.files) {
-          if (Object.hasOwnProperty.call(result.files, fileName)) {
-            const file = result.files[fileName];
-            switch (fileName) {
-              case "solution.tex":
-                console.log("Hide solutions");
-                break;
-              case "tests.json":
-                window.tests = JSON.parse(file.content);
-                renderTests(tests);
-                break;
-              default:
-                createFile(file.filename, file.content, file.type, "");
-                break;
+
+    if (localStorage.getItem("fs" + gistId)) {
+      fs = JSON.parse(localStorage.getItem("fs" + gistId));
+      openFile("main.tex");
+    } else {
+      fs = {
+        label: "root",
+        type: "Directory",
+        children: [
+          {
+            label: "assets",
+            type: "Directory",
+            children: [
+              {
+                label: "images",
+                type: "Directory",
+                children: [
+                  {
+                    label: "README.md",
+                    type: "File",
+                    contents: `# Readme\n\nIn the assets folder you can 'upload' personal files.
+None of them leave your device of course.
+Upload images or other TeX files and work with them inside of your projects.
+
+## How to upload?
+
+Just drag and drop the file(s), you will have visual feedback.`,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+      fetch("https://api.github.com/gists/" + gistId, {
+        method: "GET",
+      })
+        .then((result) => result.json())
+        .then((result) => {
+          for (const fileName in result.files) {
+            if (Object.hasOwnProperty.call(result.files, fileName)) {
+              const file = result.files[fileName];
+              switch (fileName) {
+                case "solution.tex":
+                  console.log("Hide solutions");
+                  break;
+                case "tests.json":
+                  window.tests = JSON.parse(file.content);
+                  renderTests(tests);
+                  break;
+                default:
+                  createFile(file.filename, file.content, file.type, "");
+                  break;
+              }
             }
           }
-        }
-        $files.innerHTML = getTreeHTML(fs);
-        updateTree();
-      })
-      .catch((e) => console.error(e));
+          $files.innerHTML = getTreeHTML(fs);
+          updateTree();
+        })
+        .catch((e) => console.error(e));
+    }
   }
 }

@@ -95,38 +95,6 @@ function initRootTree() {}
 const parent = document.createElement("ul");
 parent.classList.add("tree-expandable-parent");
 
-const gistId = location.hash.substring(1) || "";
-let fs = JSON.parse(localStorage.getItem("fs" + gistId)) || {
-  label: "root",
-  type: "Directory",
-  children: [
-    {
-      label: "assets",
-      type: "Directory",
-      children: [
-        {
-          label: "images",
-          type: "Directory",
-          children: [
-            {
-              label: "README.md",
-              type: "File",
-              contents: `# Readme\n\nIn the assets folder you can 'upload' personal files.
-None of them leave your device of course.
-Upload images or other TeX files and work with them inside of your projects.
-
-## How to upload?
-
-Just drag and drop the file(s), you will have visual feedback.
-The storage is also **PERSISTENT** accross `,
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
 function getTreeHTML(dir, counter = 0, currentPath = "") {
   let htmlString = "";
   const items = dir.children.sort((a, b) => {
@@ -167,25 +135,3 @@ function getTreeHTML(dir, counter = 0, currentPath = "") {
   }
   return htmlString;
 }
-
-/**
- * Opens the desired file (either in custom container or as window.open)
- * @param {string} filePath
- */
-const openFile = (filePath) => {
-  const file = getFile(filePath);
-  console.info(file);
-  if (file.type.search(/text|File|tex|json/) > -1) {
-    editor.setValue(file.contents);
-    $editor.style.display = "block";
-    $imagePreview.parentElement.parentElement.style.display = "none";
-    $defaultScreen.style.display = "none";
-  } else if (file.type.search(/image/) > -1) {
-    $imagePreview.src = file.contents;
-    $imagePreview.parentElement.parentElement.style.display = "block";
-    $editor.style.display = "none";
-    $defaultScreen.style.display = "none";
-  } else {
-    window.open(file.contents);
-  }
-};
