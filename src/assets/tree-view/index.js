@@ -95,7 +95,8 @@ function initRootTree() {}
 const parent = document.createElement("ul");
 parent.classList.add("tree-expandable-parent");
 
-let fs = JSON.parse(localStorage.getItem("fs")) || {
+const gistId = location.hash.substring(1) || "";
+let fs = JSON.parse(localStorage.getItem("fs" + gistId)) || {
   label: "root",
   type: "Directory",
   children: [
@@ -106,7 +107,20 @@ let fs = JSON.parse(localStorage.getItem("fs")) || {
         {
           label: "images",
           type: "Directory",
-          children: [],
+          children: [
+            {
+              label: "README.md",
+              type: "File",
+              contents: `# Readme\n\nIn the assets folder you can 'upload' personal files.
+None of them leave your device of course.
+Upload images or other TeX files and work with them inside of your projects.
+
+## How to upload?
+
+Just drag and drop the file(s), you will have visual feedback.
+The storage is also **PERSISTENT** accross `,
+            },
+          ],
         },
       ],
     },

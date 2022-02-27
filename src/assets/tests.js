@@ -1,11 +1,4 @@
-const tests = [
-  {
-    title: "Hello, World!",
-    desc: `Create an empty document which shows nothing but 'Hello, World!' in the body.`,
-    type: "text", // or "visual"
-    test: /\\title{ *Hello, World! *}/g,
-  },
-];
+const md2html = new showdown.Converter();
 
 const $tasks = document.getElementById("tasks");
 function renderTests(tests = []) {
@@ -27,7 +20,7 @@ function renderTests(tests = []) {
             <div id="test-desc-${i}" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                 data-bs-parent="#tasksAccordion">
                 <div class="accordion-body">
-                    ${test.desc}
+                    ${md2html.makeHtml(test.desc)}
                 </div>
             </div>
         </div>`;
@@ -35,7 +28,5 @@ function renderTests(tests = []) {
     i++;
   }
 }
-
-renderTests(tests);
 
 document.getElementsByClassName("btn-test-run");

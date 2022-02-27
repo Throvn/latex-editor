@@ -5,7 +5,6 @@ const $download = document.getElementById("download");
 const $compile = document.getElementById("compile");
 const $tabs = document.getElementById("tabs");
 const $output = document.getElementById("output");
-console.log(editor.getValue());
 
 const engine = new PdfTeXEngine();
 
@@ -36,7 +35,7 @@ const compileLaTeX = () => {
   engine
     .compileLaTeX()
     .then((result) => {
-      $output.innerHTML = result.log;
+      $output.innerText = result.log;
       console.info(result);
 
       if (result.status !== 0) {

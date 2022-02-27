@@ -1,9 +1,6 @@
 console.log("Checking for file load url...");
-console.log("FS", fs);
-console.log(location.hash);
 
 function initEditorGist() {
-  console.log("BEFORE FS", fs);
   const gistId = location.hash.substring(1);
   if (location.hash && gistId.length === 32) {
     console.log("Found task");
@@ -12,12 +9,21 @@ function initEditorGist() {
     })
       .then((result) => result.json())
       .then((result) => {
-        console.log(result);
         for (const fileName in result.files) {
           if (Object.hasOwnProperty.call(result.files, fileName)) {
             const file = result.files[fileName];
-            console.log("FS", fs);
-            createFile(file.filename, file.content, file.type, "");
+            switch (fileName) {
+              case "solution.tex":
+                console.log("Hide solutions");
+                break;
+              case "tests.json":
+                window.tests = JSON.parse(file.content);
+                renderTests(tests);
+                break;
+              default:
+                createFile(file.filename, file.content, file.type, "");
+                break;
+            }
           }
         }
         $files.innerHTML = getTreeHTML(fs);

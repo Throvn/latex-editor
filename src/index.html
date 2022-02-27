@@ -16,7 +16,7 @@
     <title>Editro</title>
 </head>
 
-<body>
+<body style="position: fixed; width: 100vw;">
     <div id="loading">
         <i class="codicon codicon-loading spinning"></i>
         <br>
@@ -66,8 +66,8 @@
                 <ul class="tree-expandable-parent py-2 m-0" style="min-height: 20%;" id="files">
                 </ul>
 
-                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1; border-top:#cccccc 1px solid;"
-                    class="px-2 mb-2 subheader">
+                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1;"
+                    class="px-2 mb-2 subheader subheader-border-top">
                     <h5 class="d-inline-block pt-1" style="user-select: none;">Output</h5>
                     <div class="icons float-right d-flex mt-2" style="height: 28.8; justify-content: baseline;">
                         <i class="codicon codicon-trash"
@@ -85,8 +85,9 @@
                 <pre><div id="output" class="px-2 h-50">The output will be printed here
 after you hit <a class="btn btn-light disabled"><i class="codicon codicon-run"></i> Compile</a></div></pre>
 
-                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1; border-top:#cccccc 1px solid;"
-                    class="px-2 subheader" onclick="document.getElementById('tasks').classList.toggle('d-none')">
+                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1;"
+                    class="px-2 subheader subheader-border-top"
+                    onclick="document.getElementById('tasks').classList.toggle('d-none')">
                     <h5 class="d-inline-block pt-1" style="user-select: none;">Tasks</h5>
 
                     <div class="icons float-right d-flex mt-2" style="height: 28.8; justify-content: baseline;">
@@ -119,10 +120,10 @@ after you hit <a class="btn btn-light disabled"><i class="codicon codicon-run"><
                             style="position: relative; transform: translateY(-60%); top: 50%;"></i>
                     </div>
                 </div>
-                <div id="editor" class="rounded" style="width: 100%; height: calc(100% - 35px); display: none;">
+                <div id="editor" class="rounded" style="width: 100%; height: calc(100% - 34px); display: none;">
                 </div>
                 <div
-                    style="width: 100%; height: calc(100% - 35px); display: block; background-image: url(./assets/images/pattern.svg);">
+                    style="width: 100%; height: calc(100% - 35px); display: none; background-image: url(./assets/images/pattern.svg);">
                     <object data="./assets/images/circle-slash.svg" type="image/svg">
                         <img id="imagePreview" class="w-100 p-2"
                             style="transform: translateY(-50%); top: 50%; position: relative;"
@@ -130,7 +131,7 @@ after you hit <a class="btn btn-light disabled"><i class="codicon codicon-run"><
                     </object>
                 </div>
                 <div id="defaultScreen" class="text-center bg-darker"
-                    style="width: 100%; height: calc(100% - 35px); display: none;">
+                    style="width: 100%; height: calc(100% - 35px); display: block;">
                     <div style="position: relative; top:50%; transform: translateY(-50%);">
                         <i class="codicon codicon-telescope" style="font-size: 100px;"></i> <br>
                         <h2>Open a file</h2>

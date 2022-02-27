@@ -52,7 +52,6 @@ const createFile = (name, contents, type, path = "") => {
 
   console.log("file created!");
 };
-console.info(fs);
 $files.innerHTML = getTreeHTML(fs);
 updateTree();
 
@@ -76,8 +75,9 @@ const getFile = (path) => {
 };
 
 /**
- * Saves all of the filse to localStorage
+ * Saves all of the files to localStorage
  */
 const saveFS = () => {
-  localStorage.setItem("fs", JSON.stringify(fs));
+  const gistId = location.hash.substring(1) || "";
+  localStorage.setItem("fs" + gistId, JSON.stringify(fs));
 };

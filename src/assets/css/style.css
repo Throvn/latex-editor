@@ -89,6 +89,7 @@ div#loading {
 }
 
 .spinning {
+    transform: translate(-50%, -50%); 
     animation-name: spin;
     animation-duration: 5000ms;
     animation-iteration-count: infinite;
@@ -108,6 +109,10 @@ div#loading {
     height: 33px;
     overflow-x: scroll;
     overflow-y: hidden;
+}
+
+.subheader-border-top {
+    border-top:#cccccc 1px solid;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -142,6 +147,10 @@ div#loading {
         color: white;
     }
 
+    .subheader-border-top {
+        border-top: black 1px solid;
+    }
+
     .tab {
         background-color: #4a4a4b;
         border-color: #1e1e1e;
@@ -153,6 +162,11 @@ div#loading {
 
     .tab-active {
         background-color: #1e1e1e !important;
+    }
+
+    div#loading {
+        background-color: #38383d;
+        color: white;
     }
 }
 
