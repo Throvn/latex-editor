@@ -107,8 +107,7 @@ div#loading {
     border-bottom: 1px #cccccc solid;
     background-color: #f9f9fa;
     height: 33px;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 .subheader-border-top {
