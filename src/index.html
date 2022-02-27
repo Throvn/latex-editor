@@ -11,6 +11,8 @@
 
     <link rel="shortcut icon" href="./assets/images/editro.svg" type="image/svg">
 
+    <link rel="stylesheet" href="../node_modules/@vscode/codicons/dist/codicon.css">
+
     <title>Editro</title>
 </head>
 
@@ -21,7 +23,8 @@
         <br>
         Loading TeX engine.
         If you use this editor for the first time, this may take up to 5 mins. <br>
-        Afterwards it is lightning fast, don't believe me, test it for yourself.
+        Afterwards it is lightning fast, don't believe me, test it for yourself. <br>
+        Please do not close the window in the meantime.
     </div>
     <!-- As a heading -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
@@ -42,8 +45,8 @@
     <div class="resize-container" style="height: calc(100vh - 56px); overflow: hidden;">
         <div class="rs-col" style="width: 20%;">
             <div class="bg-white" style="justify-self: stretch; width: 100%; overflow: auto;">
-                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1; height: 33px; border-bottom: #cccccc 1px solid; color: #4a4a4b !important; background-color: #f9f9fa;"
-                    class="px-2" onclick="document.getElementById('files').classList.toggle('d-none')">
+                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1;" class="px-2 subheader"
+                    onclick="document.getElementById('files').classList.toggle('d-none')">
                     <h5 class="d-inline-block pt-1" style="user-select: none;">
                         Files</h5>
                     <div class="icons float-right d-flex mt-2" style="height: 28.8; justify-content: baseline;">
@@ -63,8 +66,8 @@
                 <ul class="tree-expandable-parent py-2 m-0" style="min-height: 20%;" id="files">
                 </ul>
 
-                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1; height: 33px; border-top:#cccccc 1px solid; border-bottom: #cccccc 1px solid; color: #4a4a4b !important; background-color: #f9f9fa;"
-                    class="px-2 mb-2">
+                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1; border-top:#cccccc 1px solid;"
+                    class="px-2 mb-2 subheader">
                     <h5 class="d-inline-block pt-1" style="user-select: none;">Output</h5>
                     <div class="icons float-right d-flex mt-2" style="height: 28.8; justify-content: baseline;">
                         <i class="codicon codicon-trash"
@@ -79,28 +82,37 @@
                         </ul>
                     </div>
                 </div>
-                <div id="output" class="px-2 h-50">
-                </div>
+                <pre><div id="output" class="px-2 h-50">The output will be printed here
+after you hit <a class="btn btn-light disabled"><i class="codicon codicon-run"></i> Compile</a></div></pre>
 
-                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1; height: 33px; border-top:#cccccc 1px solid; border-bottom: #cccccc 1px solid; color: #4a4a4b !important; background-color: #f9f9fa;"
-                    class="px-2" onclick="document.getElementById('tasks').classList.toggle('d-none')">
+                <div style="cursor: pointer; position: sticky; top: 0; z-index: 1; border-top:#cccccc 1px solid;"
+                    class="px-2 subheader" onclick="document.getElementById('tasks').classList.toggle('d-none')">
                     <h5 class="d-inline-block pt-1" style="user-select: none;">Tasks</h5>
+
+                    <div class="icons float-right d-flex mt-2" style="height: 28.8; justify-content: baseline;">
+                        <i class="codicon codicon-run-all"
+                            onclick="document.getElementById('output').innerHTML = '';"></i>
+                        <div class="border-left mx-1"></div>
+                        <i class="codicon codicon-run-errors"
+                            onclick="document.getElementById('output').innerHTML = '';"></i>
+                    </div>
                 </div>
 
                 <div id="tasks" class="p-2 text-center" style="overflow-y: scroll;">
-                    No tasks at the moment.
+                    <!-- No tasks at the moment. -->
+                    <div class="accordion" id="tasksAccordion">
+
+                    </div>
                 </div>
             </div>
         </div>
         <div class="handler">
-            <div
-                style="height: 33px; border-bottom: #cccccc 1px solid; color: #4a4a4b !important; background-color: #f9f9fa;">
+            <div class="inner-handle">
             </div>
         </div>
         <div class="rs-col" style="width: 40%;">
             <div class="bg-light" style="justify-self: stretch; width: 100%;">
-                <div id="tabs" class="d-flex"
-                    style="border-bottom: 1px #cccccc solid; background-color: #f9f9fa; height: 33px; overflow-x: scroll; overflow-y: hidden;">
+                <div id="tabs" class="d-flex subheader">
 
                     <div class="tab" style="color: red;" onclick="deleteAllTabs()">
                         <i class="codicon codicon-trash"
@@ -120,8 +132,7 @@
             </div>
         </div>
         <div class="handler">
-            <div
-                style="height: 33px; border-bottom: #cccccc 1px solid; color: #4a4a4b !important; background-color: #f9f9fa;">
+            <div class="inner-handle">
             </div>
         </div>
         <div class="rs-col" style="width: 40%;">
@@ -150,6 +161,8 @@
         };
     </script>
 
+    <script src="./assets/showdown.min.js"></script>
+
     <script src="../node_modules/monaco-editor/min/vs/loader.js"></script>
     <script src="../node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
     <script src="../node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
@@ -159,6 +172,7 @@
     <script src="index.js"></script>
 
     <script src="./assets/filesystem.js"></script>
+    <script src="./assets/tests.js"></script>
 </body>
 
 </html>

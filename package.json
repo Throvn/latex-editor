@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "monaco-editor": "^0.23.0"
+    "@vscode/codicons": "^0.0.28",
+    "monaco-editor": "^0.23.0",
+    "showdown": "^2.0.0"
   }
 }

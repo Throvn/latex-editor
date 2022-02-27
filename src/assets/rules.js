@@ -1259,38 +1259,39 @@ monaco.languages.registerCompletionItemProvider("latex", {
 });
 
 // Define a dark solarized theme.
-// monaco.editor.defineTheme("solarized-dark", {
-//   base: "vs-dark",
-//   inherit: false,
-//   rules: rules,
-//   colors: {
-//     "editorIndentGuides.background": "#1CD1FF12",
-//     "editorIndentGuide.activeBackground": "#1CD1FF12",
-//     "editor.background": "#002b36",
-//     "editor.caret": "#eee8d5",
-//     "editor.foreground": "#839496",
-//     "editor.gutter": "#073642",
-//     "editor.invisibles": "#586e75",
-//     "editor.lineHighlight": "#1CD1FF12",
-//     "editor.selection": "#586e7559",
-//     "editor.inactiveSelection": "#586e7540",
-//     "editor.selectionBorder": "#586e75",
-//     "editor.guide": "#1CD1FF12",
-//     "editor.activeLinkForeground": "#268bd2",
-//     "editor.selectionHighlight": "#2aa19826",
-//     "editor.hoverHighlight": "#2aa19826",
-//     "editor.findMatchHighlight": "#85990033",
-//     "editor.currentFindMatchHighlight": "#85990059",
-//     "editor.wordHighlight": "#6c71c433",
-//     "editor.wordHighlightStrong": "#6c71c44D",
-//     "editor.referenceHighlight": "#6c71c466",
-//     "editor.rangeHighlight": "#6c71c41A",
-//     "editor.findRangeHighlight": "#6c71c433",
-//   },
-// });
+monaco.editor.defineTheme("solarized-dark", {
+  base: "vs-dark",
+  inherit: false,
+  rules: rules,
+  colors: {
+    "editorIndentGuides.background": "#1CD1FF12",
+    "editorIndentGuide.activeBackground": "#1CD1FF12",
+    "editor.background": "#002b36",
+    "editor.caret": "#eee8d5",
+    "editor.foreground": "#839496",
+    "editor.gutter": "#073642",
+    "editor.invisibles": "#586e75",
+    "editor.lineHighlight": "#1CD1FF12",
+    "editor.selection": "#586e7559",
+    "editor.inactiveSelection": "#586e7540",
+    "editor.selectionBorder": "#586e75",
+    "editor.guide": "#1CD1FF12",
+    "editor.activeLinkForeground": "#268bd2",
+    "editor.selectionHighlight": "#2aa19826",
+    "editor.hoverHighlight": "#2aa19826",
+    "editor.findMatchHighlight": "#85990033",
+    "editor.currentFindMatchHighlight": "#85990059",
+    "editor.wordHighlight": "#6c71c433",
+    "editor.wordHighlightStrong": "#6c71c44D",
+    "editor.referenceHighlight": "#6c71c466",
+    "editor.rangeHighlight": "#6c71c41A",
+    "editor.findRangeHighlight": "#6c71c433",
+  },
+});
 
 var editor = monaco.editor.create(document.getElementById("editor"), {
   autoClosingBrackets: true,
+
   value: `\\documentclass[12pt,fleqn,leqno,letterpaper]{article}
   
 \\include{preamble}
@@ -1313,3 +1314,13 @@ var editor = monaco.editor.create(document.getElementById("editor"), {
   },
   automaticLayout: true,
 });
+
+if (
+  window.matchMedia &&
+  window.matchMedia("(prefers-color-scheme: dark)").matches
+) {
+  // dark mode
+  editor.updateOptions({
+    theme: "vs-dark",
+  });
+}

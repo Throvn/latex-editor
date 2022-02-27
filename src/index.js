@@ -1,3 +1,5 @@
+"use strict";
+
 const $preview = document.getElementById("preview");
 const $download = document.getElementById("download");
 const $compile = document.getElementById("compile");
@@ -20,7 +22,7 @@ initSwiftLatex()
     console.error(e);
   });
 
-document.getElementById("compile").onclick = () => {
+const compileLaTeX = () => {
   $compile.classList.add("disabled");
   $compile.innerHTML = `<i class="codicon codicon-run spinning"></i> Compiling`;
 
@@ -34,6 +36,12 @@ document.getElementById("compile").onclick = () => {
     .then((result) => {
       $output.innerHTML = result.log;
       console.info(result);
+
+      if (result.status !== 0) {
+        enableCompileButton();
+        throw new Error("Could not produce PDF file.");
+      }
+
       let binary = "";
       const len = result.pdf.byteLength;
       for (var i = 0; i < len; i++) {
@@ -46,11 +54,12 @@ document.getElementById("compile").onclick = () => {
       $preview.src = pdf;
       $download.href = pdf;
 
-      $compile.innerHTML = `<i class="codicon codicon-run"></i> Compile`;
-      $compile.classList.remove("disabled");
+      enableCompileButton();
     })
     .catch((e) => console.error(e));
 };
+
+document.getElementById("compile").onclick = compileLaTeX;
 
 const addFileToEmscriptenFS = (name = "", contents, path = "/") => {
   console.log("AddFileToEmscriptenFS:");
@@ -116,4 +125,21 @@ const setAsActiveTab = (tab) => {
     }
   }
   tab.classList.add("tab-active");
+};
+
+/**
+ * Makes the Compile button in the ui clickable again
+ */
+function enableCompileButton() {
+  $compile.innerHTML = `<i class="codicon codicon-run"></i> Compile`;
+  $compile.classList.remove("disabled");
+}
+
+// prevent opening of save dialog
+// compile document instead
+document.onkeydown = (ev) => {
+  if (ev.metaKey && ev.key === "s") {
+    ev.preventDefault();
+    compileLaTeX();
+  }
 };

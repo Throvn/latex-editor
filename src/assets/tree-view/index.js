@@ -1,3 +1,5 @@
+"use strict";
+
 const $editor = document.getElementById("editor");
 const $imagePreview = document.getElementById("imagePreview");
 
@@ -85,6 +87,10 @@ function updateTree() {
   }
 }
 
+// make it possible to drag items into root
+const $root = document.getElementById("files");
+function initRootTree() {}
+
 const parent = document.createElement("ul");
 parent.classList.add("tree-expandable-parent");
 
@@ -106,23 +112,22 @@ let fs = JSON.parse(localStorage.getItem("fs")) || {
     {
       label: "main.tex",
       type: "text/plain",
-      contents: `\documentclass[12pt,fleqn,leqno,letterpaper]{article}
+      contents: `\\documentclass[12pt,fleqn,leqno,letterpaper]{article}
+\\include{preamble}
   
-    \include{preamble}
-      
-      \title{Document Title}
-      \author{Author Name\\
-        \small{Class Number - Class Name}\\
-        \small{Your Educational Institution}\\
-        \small{\texttt{email@address.com}}
-      }
-      \date{December 15, 2012}
-      
-    \begin{document}
-      
-      \setstretch{1.00}
-      \maketitle
-    \end{document}`,
+  \\title{Document Title}
+  \\author{
+    Author Name \\\\
+    \\small{Class Number - Class Name} \\\\
+    \\small{Your Educational Institution} \\\\
+    \\small{\\texttt{email@address.com}}
+  }
+  \\date{December 15, 2012}
+  
+\\begin{document}
+  
+  \\maketitle
+\\end{document}`,
     },
   ],
 };

@@ -94,3 +94,51 @@ div#loading {
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
+
+.inner-handle {
+    height: 33px;
+    border-bottom: #cccccc 1px solid;
+    color: #4a4a4b !important;
+    background-color: #f9f9fa;
+}
+
+.subheader {
+    border-bottom: 1px #cccccc solid;
+    background-color: #f9f9fa;
+    height: 33px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+    .bg-white {
+        background-color: #1e1e1e !important;
+        color: #F0F0F0;
+    }
+
+    #output,
+    .tree-item-text
+     {
+        color:#eee;
+        opacity: 1;
+    }
+
+    .tree-item-text:hover {
+        opacity: 0.8;
+    }
+
+    .handler {
+        background-color: #4a4a4b;
+    }
+
+    .inner-handle {
+        background-color: #38383d;
+        border-color: black;
+    }
+
+    .subheader {
+        background-color: #38383d;
+        border-color: black;
+        color: white;
+    }
+}
