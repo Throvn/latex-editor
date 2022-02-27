@@ -9,6 +9,8 @@ const createFolder = (name) => {
   path[path.length - 1].contents.push(newFolder);
 };
 
+console.log("FSS ", fs);
+
 /**
  * Creates a file in the `fs`-object
  * @param {string} name - Name of the file
@@ -16,18 +18,23 @@ const createFolder = (name) => {
  * @param {string} type - Directory or other
  * @param {string} path - folter path
  */
-const createFile = (name, contents, type, path) => {
+const createFile = (name, contents, type, path = "") => {
   console.log("Creating file...");
   const pathObject = path.split("/");
   let currDir = fs;
-  for (let i = 0; i < pathObject.length; i++) {
-    const currentDir = currDir.children.find((el) => {
-      console.log(el.label, pathObject[i]);
-      return el.label === pathObject[i] ? true : false;
-    });
-    currDir = currentDir;
+
+  if (path !== "/") {
+    for (let i = 0; i < pathObject.length; i++) {
+      const currentDir = currDir.children.find((el) => {
+        console.log(el.label, pathObject[i]);
+        return el.label === pathObject[i];
+      });
+      if (currentDir) {
+        currDir = currentDir;
+      }
+    }
   }
-  console.warn(currDir);
+
   if (!type && contents === null) {
     currDir.children.push({
       label: name,

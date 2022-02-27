@@ -17,6 +17,8 @@ initSwiftLatex()
   .then(() => {
     console.log("Finished loading engine");
     document.getElementById("loading").remove();
+
+    initEditorGist();
   })
   .catch((e) => {
     console.error(e);
@@ -64,6 +66,13 @@ document.getElementById("compile").onclick = compileLaTeX;
 const addFileToEmscriptenFS = (name = "", contents, path = "/") => {
   console.log("AddFileToEmscriptenFS:");
 
+  if (!engine.isReady()) {
+    throw new Error(
+      "Could not add" +
+        name +
+        " to emscripten, because engine is not yet ready."
+    );
+  }
   console.log(path + "/" + name, contents);
   for (const folder of path.split("/")) {
     try {

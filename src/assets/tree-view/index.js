@@ -109,26 +109,6 @@ let fs = JSON.parse(localStorage.getItem("fs")) || {
         },
       ],
     },
-    {
-      label: "main.tex",
-      type: "text/plain",
-      contents: `\\documentclass[12pt,fleqn,leqno,letterpaper]{article}
-\\include{preamble}
-  
-  \\title{Document Title}
-  \\author{
-    Author Name \\\\
-    \\small{Class Number - Class Name} \\\\
-    \\small{Your Educational Institution} \\\\
-    \\small{\\texttt{email@address.com}}
-  }
-  \\date{December 15, 2012}
-  
-\\begin{document}
-  
-  \\maketitle
-\\end{document}`,
-    },
   ],
 };
 
