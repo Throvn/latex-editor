@@ -5,6 +5,7 @@ const $download = document.getElementById("download");
 const $compile = document.getElementById("compile");
 const $tabs = document.getElementById("tabs");
 const $output = document.getElementById("output");
+const $outputDownload = document.getElementById("btn-dl-output");
 
 const engine = new PdfTeXEngine();
 
@@ -19,10 +20,12 @@ initSwiftLatex()
 
     initEditorGist();
   })
-  .catch((e) => {
-    console.error(e);
-  });
+  .catch(handleError);
 
+/**
+ * Compiles the currently open file.
+ * Also updates the UI accordingly.
+ */
 const compileLaTeX = () => {
   $compile.classList.add("disabled");
   $compile.innerHTML = `<i class="codicon codicon-run spinning"></i> Compiling`;
@@ -41,6 +44,7 @@ const compileLaTeX = () => {
     .compileLaTeX()
     .then((result) => {
       $output.innerText = result.log;
+      $outputDownload.href = "data:text/plain," + result.log;
       console.info(result);
 
       if (result.status !== 0) {
@@ -62,7 +66,7 @@ const compileLaTeX = () => {
 
       enableCompileButton();
     })
-    .catch((e) => console.error(e));
+    .catch(handleError);
 };
 
 document.getElementById("compile").onclick = compileLaTeX;

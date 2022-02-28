@@ -21,6 +21,10 @@ body {
     cursor: ew-resize;
 }
 
+.handler-vertical:hover {
+    cursor: ns-resize;
+}
+
 .rounded-container {
     background-color: white;
     padding: 5px;
@@ -177,4 +181,9 @@ div#loading {
 .bg-darker {
     background-color: #1e1e1e;
     color: #ccc;
+}
+
+.subheader-title {
+    user-select: none;
+    cursor: ns-resize;
 }

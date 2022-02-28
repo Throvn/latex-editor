@@ -20,6 +20,7 @@ function initEditorGist() {
     window.tests = JSON.parse(localStorage.getItem("test" + gistId));
     addToTabs(getFile("main.tex"), "main.tex");
     openFile("main.tex");
+    compileLaTeX();
 
     renderTests(window.tests);
     $files.innerHTML = getTreeHTML(fs);
@@ -78,7 +79,7 @@ Just drag and drop the file(s), you will have visual feedback.`,
         }
         saveFS();
       })
-      .catch((e) => console.error(e))
+      .catch(handleError)
       .finally(() => {
         renderTests(window.tests);
         $files.innerHTML = getTreeHTML(fs);
